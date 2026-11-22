@@ -1,9 +1,26 @@
-body {
-  min-width: 260px;
-  margin: 0;
-  padding: 16px;
-  color: #222;
-  font: 14px/1.5 system-ui, sans-serif;
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #10131b;
+  color: #f4f6fb;
 }
-h1 { margin: 0 0 8px; font-size: 18px; }
-button { padding: 6px 10px; cursor: pointer; }
+* { box-sizing: border-box; }
+body { width: 320px; margin: 0; background: radial-gradient(ellipse at 80% 0%, #252d49 0, #10131b 55%); }
+main { padding: 22px; }
+.eyebrow { color: #91a5ff; font-size: 10px; font-weight: 800; letter-spacing: .18em; }
+h1 { margin: 7px 0 5px; font-size: 25px; letter-spacing: -.04em; }
+.intro { margin: 0 0 22px; color: #aab2c5; font-size: 12px; line-height: 1.5; }
+label { display: block; margin-bottom: 8px; color: #d9deeb; font-size: 12px; font-weight: 650; }
+.input-wrap { display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #465071; border-radius: 11px; background: #171d2b; }
+input { width: 100%; min-width: 0; padding: 13px 0; border: 0; outline: 0; background: transparent; color: #fff; font: 600 22px/1.2 inherit; }
+input:focus-visible { outline: 2px solid #91a5ff; outline-offset: 3px; }
+.unit { color: #8590aa; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.scale-row { display: flex; justify-content: space-between; margin: 13px 1px 18px; color: #929bb1; font-size: 11px; }
+output { color: #c5d0ff; font-weight: 700; }
+.actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 9px; }
+button { min-height: 39px; border: 0; border-radius: 9px; background: #8197ff; color: #111629; font: 700 12px inherit; cursor: pointer; }
+button:hover { filter: brightness(1.08); }
+button:active { transform: translateY(1px); }
+button.secondary { border: 1px solid #3c455e; background: #202739; color: #dce2f2; }
+#status { min-height: 16px; margin: 14px 0 0; color: #a9b7ef; font-size: 11px; }
+.hint { margin: 9px 0 0; color: #7f899f; font-size: 10px; line-height: 1.5; }
