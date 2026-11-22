@@ -13,8 +13,9 @@ function getScale(value) {
 }
 
 function formatScale(scale) {
-  if (scale >= 10000 || scale < 0.01) return scale.toExponential(2) + "×";
-  return (scale * 100).toFixed(scale < 0.1 ? 2 : 1).replace(/\.0$/, "") + "%";
+  const percent = scale * 100;
+  if (percent >= 10000 || percent < 0.01) return percent.toExponential(2) + "%";
+  return percent.toFixed(percent < 0.1 ? 3 : 1).replace(/\.0+$/, "").replace(/(\.\d*?)0+$/, "$1") + "%";
 }
 
 function updatePreview() {
@@ -44,13 +45,29 @@ async function applyZoom(value) {
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: (zoomScale) => {
-        document.documentElement.style.zoom = String(zoomScale);
-        document.documentElement.dataset.infinitePageZoom = "true";
+        const root = document.documentElement;
+        // CSS zoom changes layout dimensions as well as visual size. This
+        // helps infinite-scroll and lazy-loading pages load more content.
+        if (CSS.supports("zoom", "1")) {
+          root.style.zoom = String(zoomScale);
+          root.style.removeProperty("transform");
+          root.style.removeProperty("transform-origin");
+          root.style.removeProperty("width");
+          root.dataset.infinitePageZoomMode = "css-zoom";
+        } else {
+          // Compatibility fallback for browsers without CSS zoom support.
+          root.style.zoom = "";
+          root.style.transform = `scale(${zoomScale})`;
+          root.style.transformOrigin = "top left";
+          root.style.width = `${100 / zoomScale}%`;
+          root.dataset.infinitePageZoomMode = "transform";
+        }
+        root.dataset.infinitePageZoom = "true";
       },
       args: [scale]
     });
     status.textContent = value === 0
-      ? "Page returned to its normal size."
+      ? "Page returned to 100%."
       : `Applied ${formatScale(scale)} page zoom.`;
   } catch (error) {
     status.textContent = "This page does not allow extensions to change its zoom.";
